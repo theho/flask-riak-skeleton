@@ -25,3 +25,10 @@ The intention is to create a skeleton for my own projects where I will be using 
 ## Setup
 * set environment variable FLASK_ENV to either DEV, TEST or PROD
 * run python runserver.py
+
+## Protobuf
+Download protobuf from http://code.google.com/p/protobuf/
+tar -xvzf protobuf-2.4.1.tar.gz 
+./configure
+make
+sudo make install

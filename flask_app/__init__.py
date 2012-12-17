@@ -3,6 +3,7 @@ import logging
 
 # Flask
 from flask import Flask
+from lib import riak_connect
 
 app = Flask(__name__)
 
@@ -14,6 +15,9 @@ env_to_config = {
 }
 config = env_to_config[os.getenv('FLASK_ENV')]
 app.config.from_object(config)
+
+
+db = riak_connect(app)
 
 # Logging
 logging.basicConfig(

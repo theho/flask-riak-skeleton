@@ -11,6 +11,8 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     DEBUG = True
     TESTING = True
+    RIAK_HOST = '127.0.0.1'
+    RIAK_PORT = 8091
 
 class TestConfig(Config):
     DEBUG = False
