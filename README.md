@@ -15,6 +15,7 @@ NOTE: This is not production ready, and is rather rough.
 
 ### Coming soon
 * flask-login
+* [python-geohash](https://github.com/simplegeo/python-geohash) - to support geospatial search in riak
 
 ### Not coming soon (as I have not yet decide what to use yet) but worth considering depending on individual projects
 * flask-security - to support API token key type authentication/authorisation
