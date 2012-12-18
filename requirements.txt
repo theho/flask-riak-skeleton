@@ -1,2 +1,3 @@
 Flask >= 0.7
 riak
+schematics

@@ -3,7 +3,6 @@ import logging
 
 # Flask
 from flask import Flask
-from lib import riak_connect
 
 app = Flask(__name__)
 
@@ -13,11 +12,14 @@ env_to_config = {
     'TEST': 'flask_app.config.TestConfig',
     'PROD': 'flask_app.config.ProductionConfig'
 }
+
 config = env_to_config[os.getenv('FLASK_ENV')]
 app.config.from_object(config)
 
 
-db = riak_connect(app)
+# Setup Riak
+import lib.riaky
+lib.riaky.connect(app)
 
 # Logging
 logging.basicConfig(
