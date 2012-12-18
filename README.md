@@ -3,14 +3,17 @@
 
 Skeleton of a Python Flask project, combining flask, riak, and html5boilerplate/twitter bootstrap.
 
-The intention is to create a skeleton for my own projects where I will be using riak, flask, and html5 as the standard framework.  Aim is to kick start any project development and deployment very quickly.
+The intention is to create a skeleton for my own projects where I will be using riak, flask, and html5 as the standard framework.  Aim is to get to a good enough code base such that I could kick start any project development and deployment very quickly.
+
+NOTE: This is not production ready, and is rather rough.
 
 ## Components (so far)
 * flask
 * initializr - html5boilerplate + twitter bootstrap.  See [initializr](http://www.initializr.com/)
+* riak-python-client - official client
+* schematics - using schematics for data models.  It supports json schema as well!
 
 ### Coming soon
-* riak connection
 * flask-login
 
 ### Not coming soon (as I have not yet decide what to use yet) but worth considering depending on individual projects
