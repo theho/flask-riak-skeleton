@@ -2,50 +2,78 @@ import riak
 import json
 from schematics.models import Model
 
-db = None
-def connect(app):
-    global db
-    conn_settings = {
-        # TODO: Include other parameters 
-        'host': app.config.get('RIAK_HOST', None),
-        'port': int(app.config.get('RIAK_PORT', 0)) or None
-    }
-    conn_settings = dict([(k, v) for k, v in conn_settings.items() if v])
-    db = riak.RiakClient(**conn_settings)
+riak_client = None
+
+def connect(host=None, port=None, app=None):
+    global riak_client
+
+    # flask app object
+    if app:  
+        conn_settings = {
+            # TODO: Include other parameters 
+            'host': app.config.get('RIAK_HOST', None),
+            'port': int(app.config.get('RIAK_PORT', 0)) or None
+        }
+        conn_settings = dict([(k, v) for k, v in conn_settings.items() if v])
+        riak_client = riak.RiakClient(**conn_settings)
+    else:
+        raise NotImplementedError('implement host/port connection')
 
 class RiakyException(Exception): 
     pass
 
-class RiakModel(Model):
-    # First cut of generic model class
+class Document(Model):
+    '''Wrapper class around schematics.models.Model class
+    It basically allow loading and saving to riak'''
+    # First cut of document class
     # It is suppose to be as thin as possible
-    bucket = None
+    bucket_name = None
+
     def __init__(self, *args, **kwargs):
         Model.__init__(self, *args, **kwargs)
+        self.client = riak_client
+        self.robj = None
+        self._key = kwargs.get('key')
+        self.bucket = self.client.bucket(self.bucket_name)
+
+    def __str__(self):
+        return '<%s:%s>' % (self.__class__.__name__, self.key)
+
+    @property 
+    def key(self):
+        if self.robj and not self._key:
+            self._key = self.robj._key
+        return self._key
+
+    @key .setter
+    def key(self, value):
+        if self._key:
+            raise RiakyException, 'Key already defined: %s' % self._key
+        self._key = value
 
     @classmethod
     def get(cls, key):
-        if not cls.bucket:
+        '''Get riak object object and deserialised into model'''
+        if not cls.bucket_name:
             raise RiakyException, 'bucket is not defined'
 
-        _obj = db.bucket(cls.bucket).get(key)
-        if _obj.get_data() is None:
+        obj = riak_client.bucket(cls.bucket_name).get(key)
+        data = obj.get_data()
+        if data is None:
             m = cls()
         else:
-            data = json.loads(_obj.get_data())
-            m = cls(**data)
+            json_data = json.loads(data)
+            m = cls(**json_data)
             m.validate()
 
-        m._obj = _obj
-        m._key = key
+        m.robj = obj
         return m
 
-    def store(self):
+    def save(self):
+        '''Save to riak after validate'''
         self.validate()
-        if self._obj:
-            self._obj.set_data(self.to_json())
+        if self.robj:
+            self.robj.set_data(self.to_json())
         else:
-            self._obj = db.bucket(self.bucket).new(self._key, self.to_json())
-        obj.store()
-    
-
+            self.robj = self.bucket.new(key=self.key, data=self.to_json())
+        self.robj.store()

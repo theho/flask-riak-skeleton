@@ -19,7 +19,7 @@ app.config.from_object(config)
 
 # Setup Riak
 import lib.riaky
-lib.riaky.connect(app)
+lib.riaky.connect(app=app)
 
 # Logging
 logging.basicConfig(
