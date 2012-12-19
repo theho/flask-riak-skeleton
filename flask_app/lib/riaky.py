@@ -60,7 +60,8 @@ class Document(Model):
         obj = riak_client.bucket(cls.bucket_name).get(key)
         data = obj.get_data()
         if data is None:
-            m = cls()
+            return None
+            # m = cls()
         else:
             json_data = json.loads(data)
             m = cls(**json_data)
@@ -77,3 +78,8 @@ class Document(Model):
         else:
             self.robj = self.bucket.new(key=self.key, data=self.to_json())
         self.robj.store()
+
+    def delete(self):
+        if self.robj:
+            self.robj.delete()
+        return self

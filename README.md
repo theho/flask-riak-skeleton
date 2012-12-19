@@ -11,7 +11,7 @@ NOTE: This is not production ready, and is rather rough.
 * flask
 * initializr - html5boilerplate + twitter bootstrap.  See [initializr](http://www.initializr.com/)
 * riak-python-client - official client
-* schematics - using schematics for data models.  It supports json schema as well!
+* schematics - using schematics for data models.  It supports json schema as well.
 
 ### Coming soon
 * flask-login
