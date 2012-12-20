@@ -1,10 +1,12 @@
 import os
 import logging
+from flask_mail import Mail
 
 # Flask
 from flask import Flask
 
 app = Flask(__name__)
+mail = Mail(app)
 
 # Config
 env_to_config = {

@@ -13,7 +13,9 @@ class DevelopmentConfig(Config):
     TESTING = True
     RIAK_HOST = '127.0.0.1'
     RIAK_PORT = 8091
-
+    SECURITY_REGISTERABLE = True
+    SECURITY_CONFIRMABLE = False
+    SECURITY_LOGIN_WITHOUT_CONFIRMATION = True
 class TestConfig(Config):
     DEBUG = False
     TESTING = True

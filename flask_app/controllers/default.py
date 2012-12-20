@@ -11,3 +11,12 @@ from flask_security.decorators import login_required
 @login_required
 def index():   
     return render_template('index.html')
+
+from flask_security.views import register
+
+# @default.route('/aaa')
+# def aa():   
+#     return render_template('index.html')
+
+    
+

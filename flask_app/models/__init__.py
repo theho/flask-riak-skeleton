@@ -7,12 +7,10 @@ from schematics.types.compound import ListType
 from flask.ext.security import UserMixin, RoleMixin
 
 class User(Document, UserMixin):
-    def __init__(self, *args, **kwargs):
-        Document.__init__(self, *args, **kwargs)
-
     bucket_name = 'user'
-    email = id = Document.key
 
+    id = Document.key
+    email = EmailType()
     name = StringType(max_length=38)
     password = StringType(max_length=8)
     active = BooleanType(default=True)
@@ -24,17 +22,11 @@ class User(Document, UserMixin):
         return self.key
 
 class Role(Document, RoleMixin):
-    def __init__(self, *args, **kwargs):
-        Document.__init__(self, *args, **kwargs)
 
     id = Document.key
-
     bucket_name = 'role'
-    
     name = StringType(max_length=8)
     description = StringType(max_length=208)
-
-
 
 # class Role(riaky.Document, RoleMixin):
 #     id = db.Column(db.Integer(), primary_key=True)

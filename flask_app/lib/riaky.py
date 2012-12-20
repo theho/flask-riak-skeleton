@@ -63,8 +63,8 @@ class Document(Model):
             return None
             # m = cls()
         else:
-            json_data = json.loads(data)
-            m = cls(**json_data)
+            # json_data = json.loads(data)
+            m = cls(**data)
             m.validate()
 
         m.robj = obj
@@ -74,12 +74,25 @@ class Document(Model):
         '''Save to riak after validate'''
         self.validate()
         if self.robj:
-            self.robj.set_data(self.to_json())
+            self.robj.set_data(self.to_python())
         else:
-            self.robj = self.bucket.new(key=self.key, data=self.to_json())
+            self.robj = self.bucket.new(key=self.key, data=self.to_python())
         self.robj.store()
 
     def delete(self):
         if self.robj:
             self.robj.delete()
         return self
+
+    @classmethod
+    def search(cls, qry):
+        search_query = riak_client.search(cls.bucket_name, qry)
+
+        for result in search_query.run():
+            obj = result.get()
+            data = obj.get_data()
+            # json_data = json.loads(data)
+            m = cls(**data)
+            m.validate()
+            m.robj = obj
+            yield m
