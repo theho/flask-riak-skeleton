@@ -12,8 +12,12 @@ def connect(host=None, port=None, app=None):
         conn_settings = {
             # TODO: Include other parameters 
             'host': app.config.get('RIAK_HOST', None),
-            'port': int(app.config.get('RIAK_PORT', 0)) or None
+            'port': int(app.config.get('RIAK_PORT', 0)) or None,
         }
+        if app.config.get('RIAK_PBC') and app.config.get('RIAK_PORT_PB'):
+            conn_settings['transport_class']= riak.RiakPbcTransport
+            conn_settings['port'] = app.config.get('RIAK_PORT_PB')
+
         conn_settings = dict([(k, v) for k, v in conn_settings.items() if v])
         riak_client = riak.RiakClient(**conn_settings)
     else:

@@ -11,8 +11,13 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     DEBUG = True
     TESTING = True
-    RIAK_HOST = '127.0.0.1'
-    RIAK_PORT = 8091
+    # RIAK_HOST = '127.0.0.1'
+    # RIAK_PORT = 8091
+    RIAK_HOST = '79.125.101.117'
+    RIAK_PORT = 8098
+
+    RIAK_PORT_PB = 8087
+    RIAK_PBC = True
     SECURITY_REGISTERABLE = True
     SECURITY_CONFIRMABLE = False
     SECURITY_LOGIN_WITHOUT_CONFIRMATION = True
