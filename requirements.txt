@@ -1,4 +1,5 @@
 Flask >= 0.7
 riak
-flask-security
+#flask-security
+flask-login
 schematics

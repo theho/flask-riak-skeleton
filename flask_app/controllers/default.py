@@ -4,15 +4,10 @@ import json
 
 default = Blueprint('default', __name__)
 
-from flask_security.decorators import login_required
-
-
 @default.route('/')
-@login_required
+# @login_required
 def index():   
     return render_template('index.html')
-
-from flask_security.views import register
 
 # @default.route('/aaa')
 # def aa():   
