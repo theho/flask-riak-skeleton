@@ -11,22 +11,22 @@ class User(Document, UserMixin):
 
     id = Document.key
     email = EmailType()
-    name = StringType(max_length=38)
+    # name = StringType(max_length=38)
     password = StringType(max_length=8)
     active = BooleanType(default=True)
-    confirmed_at = DateTimeType()
-    roles = ListType(StringType()) 
+    # confirmed_at = DateTimeType()
+    # roles = ListType(StringType()) 
 
-    @property
-    def username(self):
-        return self.key
+    # @property
+    # def username(self):
+    #     return self.key
 
-class Role(Document, RoleMixin):
+# class Role(Document, RoleMixin):
 
-    id = Document.key
-    bucket_name = 'role'
-    name = StringType(max_length=8)
-    description = StringType(max_length=208)
+#     id = Document.key
+#     bucket_name = 'role'
+#     name = StringType(max_length=8)
+#     description = StringType(max_length=208)
 
 # class Role(riaky.Document, RoleMixin):
 #     id = db.Column(db.Integer(), primary_key=True)

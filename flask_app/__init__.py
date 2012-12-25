@@ -29,6 +29,28 @@ logging.basicConfig(
 import lib.riaky
 lib.riaky.connect(app=app)
 
+# Login Manager
+from flask.ext.login import (LoginManager, current_user, login_required,
+                            login_user, logout_user, AnonymousUser,
+                            confirm_login, fresh_login_required)
+from models import User
+
+# class Anonymous(AnonymousUser):
+#     name = u"Anonymous"
+
+login_manager = LoginManager()
+# login_manager.anonymous_user = Anonymous
+login_manager.login_view = "/login"
+login_manager.login_message = u"Please log in to access this page."
+# login_manager.refresh_view = "reauth"
+
+@login_manager.user_loader
+def load_user(id):
+    user = User.get(id)
+    return user
+
+login_manager.setup_app(app)
+
 
 # Helpers
 from flask_app.lib.helpers import page_not_found
