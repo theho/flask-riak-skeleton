@@ -4,6 +4,9 @@ class Config(object):
     SECRET_KEY = '{some very secret key that you should never share}'
     SITE_NAME = '{SITE_NAME}'
 
+    FACEBOOK_APP_ID = '311885532201394'
+    FACEBOOK_APP_SECRET ='091b8b9f9cbbc7ad39c9d7faafbc9c8d'
+
 class ProductionConfig(Config):
     DEBUG = False
     TESTING = False

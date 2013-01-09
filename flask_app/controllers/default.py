@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, url_for
 from flask_app.models import *
 import json
 from flask.ext.login import current_user, login_required
@@ -25,7 +25,6 @@ def login_post():
     u = User.get(login)
     if u:
         login_user(u, remember=request.form.get('remember'))
-        print 'cool!'
         flash("login success")
     else:
         flash("Failed login")
@@ -37,9 +36,3 @@ def logout():
     logout_user()
     flash("Logged out.")
     return render_template('login.html'), 404
-
-# @default.route('/aaa')
-# def aa():   
-#     return render_template('index.html')
-
-

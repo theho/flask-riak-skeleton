@@ -58,3 +58,5 @@ from flask_app.lib.helpers import page_not_found
 # Blueprints    
 from flask_app.controllers.default import default
 app.register_blueprint(default)
+from flask_app.controllers.oauth.facebook import mod
+app.register_blueprint(mod)
