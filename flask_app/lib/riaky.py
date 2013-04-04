@@ -4,6 +4,10 @@ import copy
 from schematics.models import Model
 from crdt.sets import LWWSet
 
+######
+# THIS IS NOT READY FOR PROD!  Pre-Alpha code!!
+#####
+
 riak_client = None
 
 def connect(host=None, port=None, app=None):

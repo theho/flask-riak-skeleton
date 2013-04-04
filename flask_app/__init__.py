@@ -6,19 +6,6 @@ from flask import Flask,url_for
 
 
 app = Flask(__name__, static_folder=None)  # Disable static 
-app.static_folder = 'static'  # Enable is back, but the URL rule is still not created 
-app.add_url_rule('/static/<path:filename>', 
-                      endpoint='static', 
-                      view_func=app.send_static_file)
-
-def static(path):
-    return url_for('static', filename=path)
-
-@app.context_processor
-def inject_static():
-    return dict(static=static)
-
-
 
 # Config
 env_to_config = {
@@ -44,6 +31,19 @@ logging.basicConfig(
     datefmt='%Y%m%d-%H:%M%p',
 )
 
+# Static files
+app.static_folder = 'static'  # Enable is back, but the URL rule is still not created 
+app.add_url_rule('/static/<path:filename>', 
+                      endpoint='static', 
+                      view_func=app.send_static_file)
+
+def static(path):
+    return url_for('static', filename=path)
+
+@app.context_processor
+def inject_static():
+    return dict(static=static)
+
 # Setup Riak
 import lib.riaky
 lib.riaky.connect(app=app)
@@ -59,7 +59,6 @@ login_manager = LoginManager()
 login_manager.login_view = "/login"
 login_manager.login_message = u"Please log in to access this page."
 
-
 @login_manager.user_loader
 def load_user(id):
     print 'load_user', id, id.__class__
@@ -71,7 +70,7 @@ login_manager.setup_app(app)
 
 
 # Helpers
-from flask_app.lib.helpers import page_not_found
+# from flask_app.lib.helpers import page_not_found
 
 # Blueprints
 from flask_app.controllers.web import web
