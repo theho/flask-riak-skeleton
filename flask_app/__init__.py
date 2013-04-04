@@ -62,3 +62,6 @@ from flask_app.lib.helpers import page_not_found
 # Blueprints
 from flask_app.controllers.default import web
 app.register_blueprint(web)
+
+from flask_app.controllers.default import mobile
+app.register_blueprint(mobile)
