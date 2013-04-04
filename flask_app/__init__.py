@@ -2,9 +2,23 @@ import os
 import logging
 
 # Flask
-from flask import Flask
+from flask import Flask,url_for
 
-app = Flask(__name__)
+
+app = Flask(__name__, static_folder=None)  # Disable static 
+app.static_folder = 'static'  # Enable is back, but the URL rule is still not created 
+app.add_url_rule('/static/<path:filename>', 
+                      endpoint='static', 
+                      view_func=app.send_static_file)
+
+def static(path):
+    return url_for('static', filename=path)
+
+@app.context_processor
+def inject_static():
+    return dict(static=static)
+
+
 
 # Config
 env_to_config = {
@@ -60,8 +74,11 @@ login_manager.setup_app(app)
 from flask_app.lib.helpers import page_not_found
 
 # Blueprints
-from flask_app.controllers.default import web
-app.register_blueprint(web)
+from flask_app.controllers.web import web
+app.register_blueprint(web, subdomain='www')
 
-from flask_app.controllers.default import mobile
-app.register_blueprint(mobile)
+from flask_app.controllers.mobile import mobile
+app.register_blueprint(mobile, subdomain='m')
+
+from flask_app.controllers.api import api
+app.register_blueprint(api, subdomain='api')

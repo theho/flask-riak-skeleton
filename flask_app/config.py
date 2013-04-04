@@ -5,6 +5,7 @@ class Config(object):
     SITE_NAME = '{SITE_NAME}'
 
     RIAK_DB_PREFIX = 'clique'
+    SERVER_NAME='hogatu.com'
 
 class ProductionConfig(Config):
     DEBUG = False
@@ -28,7 +29,7 @@ class DevelopmentConfig(Config):
     # Protobuf port
     # RIAK_PORT_PB = 8087
     RIAK_PBC = True
-    PORT=8080
+    PORT=80
 
 
 class TestConfig(Config):
