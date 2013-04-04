@@ -1,4 +1,7 @@
 Flask >= 0.7
 riak
-flask-security
 schematics
+git+https://github.com/ericmoritz/crdt.git#egg=crdt
+git+https://github.com/ericmoritz/riak_crdt.git#egg=riak_crdt
+protobuf
+git+https://github.com/themartorana/python-postmark.git

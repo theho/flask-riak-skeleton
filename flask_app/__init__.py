@@ -1,12 +1,10 @@
 import os
 import logging
-from flask_mail import Mail
 
 # Flask
 from flask import Flask
 
 app = Flask(__name__)
-mail = Mail(app)
 
 # Config
 env_to_config = {
@@ -15,13 +13,20 @@ env_to_config = {
     'PROD': 'flask_app.config.ProductionConfig'
 }
 
-config = env_to_config[os.getenv('FLASK_ENV')]
+# If running on local pc (mac), load DEV config
+import socket
+hostname = socket.gethostname()
+if 'mac' in hostname:
+    config = env_to_config['DEV']
+else:
+    config = env_to_config['PROD']
+
 app.config.from_object(config)
 
 # Logging
 logging.basicConfig(
     level=logging.DEBUG,
-    format='[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s',
+    format='%(message)s',
     datefmt='%Y%m%d-%H:%M%p',
 )
 
@@ -29,16 +34,31 @@ logging.basicConfig(
 import lib.riaky
 lib.riaky.connect(app=app)
 
-# Setup Flask-Security
-from flask.ext.security import Security
-from lib.security import RiakyUserDatastore
-from flask_app.models import User, Role
-user_datastore = RiakyUserDatastore(lib.riaky.riak_client, User, Role)
-security = Security(app, user_datastore)
+# Login Manager
+from flask.ext.login import (LoginManager, current_user, login_required,
+                            login_user, logout_user, AnonymousUser,
+                            confirm_login, fresh_login_required)
+from models import User
+
+
+login_manager = LoginManager()
+login_manager.login_view = "/login"
+login_manager.login_message = u"Please log in to access this page."
+
+
+@login_manager.user_loader
+def load_user(id):
+    print 'load_user', id, id.__class__
+    user = User.get(id)
+    print 'loaded', user, user.key
+    return user
+
+login_manager.setup_app(app)
+
 
 # Helpers
 from flask_app.lib.helpers import page_not_found
 
-# Blueprints    
+# Blueprints
 from flask_app.controllers.default import default
 app.register_blueprint(default)
