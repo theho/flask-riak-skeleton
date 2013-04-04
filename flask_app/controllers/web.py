@@ -4,25 +4,25 @@ import json
 from flask.ext.login import current_user, login_required, login_user, logout_user
 from flask import request, render_template, redirect, flash, make_response, send_file
 
-default = Blueprint('default', __name__)
+web = Blueprint('web', __name__)
 
-@default.route('/')
+@web.route('/')
 def index():   
     return render_template('index.html')
 
 
-@default.route('/login', methods=['GET'])
+@web.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
 
-@default.route('/login', methods=['POST'])
+@web.route('/login', methods=['POST'])
 def login_post():
     login = request.form['email']
     # TODO: check for password too.
     flash("login success: %s" % login)
     return redirect('/')
 
-@default.route('/logout')
+@web.route('/logout')
 @login_required
 def logout():
     logout_user()
